@@ -7,7 +7,6 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    DATABASE_URL: z.string().url(),
     PGHOST: z.string(),
     PGDATABASE: z.string(),
     PGUSER: z.string(),
@@ -32,7 +31,6 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
-    DATABASE_URL: process.env.DATABASE_URL,
     PGHOST: process.env.PGHOST,
     PGDATABASE: process.env.PGDATABASE,
     PGUSER: process.env.PGUSER,

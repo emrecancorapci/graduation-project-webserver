@@ -12,5 +12,4 @@ export default {
     database: env.PGDATABASE,
     ssl: true,
   },
-  tablesFilter: ["grad-nextjs_*"],
 } satisfies Config;

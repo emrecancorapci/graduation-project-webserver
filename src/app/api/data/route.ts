@@ -4,8 +4,13 @@ import { type NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const min = Number.parseInt(searchParams.get('min') ?? '');
-  const max = Number.parseInt(searchParams.get('max') ?? '');
+  const min_parse = Number.parseInt(searchParams.get('min') ?? '');
+  const max_parse = Number.parseInt(searchParams.get('max') ?? '');
+  const min = !Number.isNaN(min_parse) ? min_parse : null; 
+  const max = !Number.isNaN(max_parse) ? max_parse : null;
+
+  console.log(searchParams.get('min'), searchParams.get('max'));
+  console.log(min, max);
 
 
   const thirtyMin = 1_800_000; // 30 * 60 * 1000
