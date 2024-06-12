@@ -1,34 +1,19 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
+import { bigint, numeric, pgTable, serial, smallint, varchar } from 'drizzle-orm/pg-core';
 
-import { sql } from "drizzle-orm";
-import {
-  index,
-  pgTableCreator,
-  serial,
-  timestamp,
-  varchar,
-} from "drizzle-orm/pg-core";
+export const sensors = pgTable('sensors', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 64 }).notNull(),
+  short: varchar('short', { length: 2 }),
+  unit: varchar('unit', { length: 16 }),
+});
 
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
-export const createTable = pgTableCreator((name) => `grad-nextjs_${name}`);
-
-export const posts = createTable(
-  "post",
-  {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt", { withTimezone: true }),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
-);
+export const sensorData = pgTable('sensor_data', {
+  id: serial('id').primaryKey(),
+  time: bigint('time', { mode: 'number' }).notNull(),
+  tp: smallint('tp'),
+  hd: smallint('hd'),
+  ph: numeric('ph', { precision: 4, scale: 2 }),
+  gh: smallint('gh'),
+  aq: smallint('aq'),
+  lt: smallint('lt'),
+});
