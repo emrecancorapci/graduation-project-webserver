@@ -15,7 +15,6 @@ export default {
       },
     },
     fontFamily: {
-        sans: ["var(--font-geist-sans)", ...fontFamily.sans],
       display: ['Poetsen One', ...fontFamily.serif],
       body: ['Reddit Sans', ...fontFamily.serif],
     },
