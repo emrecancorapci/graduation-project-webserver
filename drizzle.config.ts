@@ -6,7 +6,11 @@ export default {
   schema: "./src/server/db/schema.ts",
   dialect: "postgresql",
   dbCredentials: {
-    url: env.DATABASE_URL,
+    host: env.PGHOST,
+    user: env.PGUSER,
+    password: env.PGPASSWORD,
+    database: env.PGDATABASE,
+    ssl: true,
   },
   tablesFilter: ["grad-nextjs_*"],
 } satisfies Config;

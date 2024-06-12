@@ -8,6 +8,11 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string().url(),
+    PGHOST: z.string(),
+    PGDATABASE: z.string(),
+    PGUSER: z.string(),
+    PGPASSWORD: z.string(),
+    ENDPOINT_ID: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -28,6 +33,11 @@ export const env = createEnv({
    */
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
+    PGHOST: process.env.PGHOST,
+    PGDATABASE: process.env.PGDATABASE,
+    PGUSER: process.env.PGUSER,
+    PGPASSWORD: process.env.PGPASSWORD,
+    ENDPOINT_ID: process.env.ENDPOINT_ID,
     NODE_ENV: process.env.NODE_ENV,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
