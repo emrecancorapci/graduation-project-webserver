@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const body = await request.json() as SensorData[];
+  const {data: body} = await request.json() as { data: SensorData[]};
 
   if (!Array.isArray(body)) {
     return new Response('Invalid request body', { status: 400 });
