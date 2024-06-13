@@ -32,27 +32,22 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const {data: body} = await request.json() as { data: SensorData[]};
+  const { data: body } = await request.json() as { data: SensorData[] };
 
-  if (!Array.isArray(body)) {
-    return new Response('Invalid request body', { status: 400 });
-  }
-
-  if (body.length === 0) {
+  if (!Array.isArray(body) || body.length === 0) {
     return new Response('Invalid request body', { status: 400 });
   }
 
   if (
     !body.every(
       (data) =>
-        typeof data.time === 'number' ||
-        (typeof data.time === 'string' &&
-          (data.tp === undefined || typeof data.tp === 'number') &&
-          (data.hd === undefined || typeof data.hd === 'number') &&
-          (data.ph === undefined || typeof data.ph === 'number') &&
-          (data.gh === undefined || typeof data.gh === 'number') &&
-          (data.aq === undefined || typeof data.aq === 'number') &&
-          (data.lt === undefined || typeof data.lt === 'number'))
+        (typeof data.time === 'number' || typeof data.time === 'string') &&
+        (data.tp === undefined || typeof data.tp === 'number') &&
+        (data.hd === undefined || typeof data.hd === 'number') &&
+        (data.ph === undefined || typeof data.ph === 'number') &&
+        (data.gh === undefined || typeof data.gh === 'number') &&
+        (data.aq === undefined || typeof data.aq === 'number') &&
+        (data.lt === undefined || typeof data.lt === 'number')
     )
   ) {
     return new Response('Invalid request body', { status: 400 });
@@ -65,25 +60,21 @@ export async function POST(request: NextRequest) {
       time,
       tp: data.tp ?? undefined,
       hd: data.hd ?? undefined,
-      ph: String(data.ph) ?? undefined,
+      ph: data.ph !== null && data.ph !== undefined ? String(data.ph) : undefined,
       gh: data.gh ?? undefined,
       aq: data.aq ?? undefined,
       lt: data.lt ?? undefined,
     };
   });
 
-  await db
-    .insert(sensorData)
-    .values(secureBody)
-    .then((result) => {
-      console.log(result);
-      return new Response('Data inserted', { status: 201 });
-    })
-    .catch((error) => {
-      console.error(error);
-      return new Response('Error inserting data', { status: 500 });
-    });
-
+  try {
+    const result = await db.insert(sensorData).values(secureBody);
+    console.log(result);
+    return new Response('Data inserted', { status: 201 });
+  } catch (error) {
+    console.error(error);
+    return new Response('Error inserting data', { status: 500 });
+  }
 }
 
 interface SensorData {
